@@ -55,7 +55,7 @@ export function AddComment({ user, post }: { user: postgres.Row, post: postgres.
 function UserProfile({ user }: { user: postgres.Row }) {
     return (
         <Link
-            href={`/users/${user.id}`}
+            href={`/app/users/${user.id}`}
             className="flex flex-row gap-4 items-center w-[max-content]">
             <UserProfileImage id={user.id} hasImage={user.has_profile_image} styles="size-9" />
             <h1 className="text-primary-200 pr-3">{user.name}</h1>

@@ -61,7 +61,7 @@ async function LoadedComments({ post, userID }: { post: postgres.Row, userID: nu
 function UserProfile({ comment, post }: { comment: postgres.Row, post: postgres.Row }) {
     return (
         <Link
-            href={`/users/${comment.user_id}`}
+            href={`/app/users/${comment.user_id}`}
             className="flex flex-row gap-4 items-center w-[max-content]">
             <UserProfileImage id={comment.user_id} hasImage={comment.has_profile_image} styles="size-9" />
             <h1 className={`${post.author == comment.user_id ? "text-light-100 bg-primary-900 px-3 rounded-full transform -translate-x-1" : "text-primary-300"}`}>{comment.name}</h1>

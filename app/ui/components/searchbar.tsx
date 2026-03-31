@@ -69,7 +69,7 @@ function Results({ data, setHideResults }: { data: { loading?: boolean, posts?: 
                                         <div className="flex flex-col bg-dark-200 rounded-md">
                                             {data.posts.map((post, i) => (
                                                 <Link
-                                                    href={`/posts/${post.id}`} key={i} onClick={handleResultClick}
+                                                    href={`/app/posts/${post.id}`} key={i} onClick={handleResultClick}
                                                     className="h-8 flex flex-row justify-between items-center px-2 py-1 rounded-md transition duration-50 cursor-pointer hover:bg-dark-100"
                                                 >
                                                     <span>{post.title}</span>
@@ -85,7 +85,7 @@ function Results({ data, setHideResults }: { data: { loading?: boolean, posts?: 
                                         <div className="flex flex-col bg-dark-200 rounded-md">
                                             {data.users.map((user, i) => (
                                                 <Link
-                                                    href={`/users/${user.id}`} key={i} onClick={handleResultClick}
+                                                    href={`/app/users/${user.id}`} key={i} onClick={handleResultClick}
                                                     className="h-8 flex flex-row justify-left items-center gap-2 px-2 py-1 rounded-md transition duration-50 cursor-pointer hover:bg-dark-100"
                                                 >
                                                     <UserProfileImage id={user.id} hasImage={user.has_profile_image} styles="size-5" />
@@ -101,7 +101,7 @@ function Results({ data, setHideResults }: { data: { loading?: boolean, posts?: 
                                         <div className="flex flex-col bg-dark-200 rounded-md">
                                             {data.communities.map((community, i) => (
                                                 <Link
-                                                    href={`/communities/${community.id}`} key={i} onClick={handleResultClick}
+                                                    href={`/app/communities/${community.id}`} key={i} onClick={handleResultClick}
                                                     className="h-8 flex flex-row justify-between items-center gap-2 px-2 py-1 rounded-md transition duration-50 cursor-pointer hover:bg-dark-100"
                                                 >
                                                     <CommunityTag id={community.id} name={community.name} colorID={community.color} />

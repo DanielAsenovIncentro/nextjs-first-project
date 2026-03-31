@@ -61,7 +61,7 @@ function GhostMessageChannel({ selectedUser }: { selectedUser: postgres.Row }) {
                         <BackIcon width="30px" className="mr-2" />
                     </button>
                 </div>
-                <Link href={`/users/${selectedUser.id}`} className="flex flex-row items-center gap-3 h-full px-4 transition duration-100 hover:bg-dark-200 -translate-x-2">
+                <Link href={`/app/users/${selectedUser.id}`} className="flex flex-row items-center gap-3 h-full px-4 transition duration-100 hover:bg-dark-200 -translate-x-2">
                     <UserProfileImage id={selectedUser.id} hasImage={selectedUser.has_profile_image} styles="size-8" />
                     <span className="font-bold">{selectedUser.name}</span>
                 </Link>

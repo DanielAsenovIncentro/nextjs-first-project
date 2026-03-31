@@ -16,7 +16,7 @@ export default async function LeftNav() {
     if (!session) redirect("/login");
     const userID = session?.userId;
     const otherID = Number(session?.currentChatUser);
-    if (userID == otherID) redirect(`/users/${userID}`);
+    if (userID == otherID) redirect(`/app/users/${userID}`);
 
     if (!otherID || otherID <= 0) {
         const users = await fetchUsersExcept(session.userId);

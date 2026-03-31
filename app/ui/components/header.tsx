@@ -49,7 +49,7 @@ function HeaderUserIcon({ user }: { user: postgres.Row|undefined }) {
                 // User is signed in
                 <Dropdown direction="left" content={(
                     <div className="text-light-100 no-wrap w-32 flex flex-col [&>*]:flex [&>*]:flex-row [&>*]:items-center [&>*]:gap-2">
-                        <Link href={`/users/${user[0].id}`} className="transition duration-50 cursor-pointer hover:bg-primary-600 px-4 h-8">
+                        <Link href={`/app/users/${user[0].id}`} className="transition duration-50 cursor-pointer hover:bg-primary-600 px-4 h-8">
                             <UserIcon width="20px" />
                             <span>Profile</span>
                         </Link>
@@ -72,7 +72,7 @@ function HeaderUserIcon({ user }: { user: postgres.Row|undefined }) {
                 // User is not signed in
                 <Dropdown direction="left" content={(
                     <div className="text-light-100 no-wrap w-32 flex flex-col [&>*]:flex [&>*]:flex-row [&>*]:items-center [&>*]:gap-2">
-                        <Link href={`/login`} className="transition duration-50 cursor-pointer hover:bg-primary-600 px-4 h-8">
+                        <Link href="/login" className="transition duration-50 cursor-pointer hover:bg-primary-600 px-4 h-8">
                             <SignInIcon width="20px" />
                             <span>Log in</span>
                         </Link>
