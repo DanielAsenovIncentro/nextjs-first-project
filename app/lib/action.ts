@@ -10,7 +10,6 @@ import { redirect } from "next/navigation";
 import { updateSessionCurrentChatUser, updateSessionPostCycle } from "./dal";
 import bcrypt from "bcryptjs";
 import { writeFile } from "fs/promises";
-import { NextResponse } from "next/server";
 import path from "path";
 
 // export const fetchCache = "force-no-store";
@@ -22,7 +21,7 @@ export async function onPostLike(userID: number, postID: number) {
         INSERT INTO liked_posts SELECT ${userID} as user, ${postID} as post WHERE NOT EXISTS (SELECT 1 FROM deleted);
     `;
 
-    revalidatePath("/");
+    revalidatePath("/app");
 }
 
 const commentSchema = z.object({
@@ -44,14 +43,14 @@ export async function addPostComment(prevState: any, formData: FormData) {
     }
 
     await sql`INSERT INTO comments (post, author, content) VALUES (${postID}, ${userID}, ${content})`;
-    revalidatePath("/");
+    revalidatePath("/app");
     return { content }
 }
 
 export async function deleteComment(formData: FormData) {
     const commentID = formData.get("comment-id") as string;
     await sql`DELETE FROM comments WHERE id = ${commentID}`;
-    revalidatePath("/");
+    revalidatePath("/app");
 }
 
 export async function authenticate(prevState: any, formData: FormData) {
@@ -113,7 +112,6 @@ export async function sendDM(formData: FormData) {
         INSERT INTO messages (content, author, channel)
         VALUES (${content}, ${user1}, (SELECT id FROM dm_channels WHERE (user1 = ${user1} AND user2 = ${user2}) OR (user1 = ${user2} AND user2 = ${user1})));
     `;
-    revalidatePath(`/users/${user2}/chat`);
 }
 
 export async function deleteDM(formData: FormData) {
@@ -134,7 +132,7 @@ export async function onDMGoBack() {
 
 export async function loadMorePosts() {
     await updateSessionPostCycle();
-    revalidatePath("/");
+    revalidatePath("/app");
 }
 
 export async function homePageSearch(query: string) {
@@ -182,7 +180,7 @@ export async function createPost(prevState: any, formData: FormData) {
     const results = await sql`INSERT INTO posts (title, content, author, has_image, community) VALUES (${title}, ${content}, ${userID}, ${hasImage}, ${postCommunity}) RETURNING id`;
     if(hasImage) saveFile(image, "post-images/", `${results[0].id}.jpg`);
 
-    redirect("/");
+    redirect("/app");
 }
 
 async function saveFile(file: File, pathName: string, fileName: string) {
@@ -196,7 +194,7 @@ async function saveFile(file: File, pathName: string, fileName: string) {
 
 export async function deletePost(postID: number) {
     await sql`DELETE FROM posts WHERE id = ${postID}`;
-    redirect("/");
+    redirect("/app");
 }
 
 const communitySchema = z.object({
@@ -229,5 +227,5 @@ export async function createCommunity(prevState: any, formData: FormData) {
     const results = await sql`INSERT INTO communities (name, creator, color, description) VALUES (${name}, ${userID}, ${communityColor}, ${description}) RETURNING id`;
     if(hasImage) saveFile(image, "community-banner-images/", `${results[0].id}.jpg`);
 
-    redirect("/communities");
+    redirect("/app/communities");
 }

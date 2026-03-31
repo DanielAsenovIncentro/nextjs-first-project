@@ -1,4 +1,3 @@
-import LeftNav from "@/app/ui/components/leftnav";
 import RightNav from "@/app/ui/components/rightnav";
 import Content from "@/app/ui/content";
 

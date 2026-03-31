@@ -14,7 +14,7 @@ export function Post({ post, userID }: { post: postgres.Row, userID: number }) {
     return (
         <div className="grid grid-cols-[auto_50px]">
             <Link
-                key={post.id} href={`/posts/${post.id}`}
+                key={post.id} href={`/app/posts/${post.id}`}
                 className="bg-dark-100 rounded-l-md transition ease-out duration-50 hover:bg-dark-50 hover:[&_img]:brightness-105"
             >
                 {post.has_image ? (<ImagePost post={post} />) : (<TextPost post={post} />)}

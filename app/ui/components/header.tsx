@@ -10,11 +10,11 @@ import { signOutUser } from "@/app/lib/action";
 import postgres from "postgres";
 import { AppLogo } from "@/app/lib/clientutils";
 
-export default function Header({ user }:{ user: postgres.Row|undefined }) {
+export default function Header({ user }:{ user?: postgres.Row|undefined }) {
     return (
         <header className="bg-dark-300 grid grid-cols-3 items-center">
             <div className="flex items-center h-full">
-                <Link href="/" className="font-bold relative h-full flex flex-row items-center gap-3 transition duration-100 hover:brightness-110 hover:[&>img]:rotate-z-5">
+                <Link href="/app" className="font-bold relative h-full flex flex-row items-center gap-3 transition duration-100 hover:brightness-110 hover:[&>img]:rotate-z-5">
                     <AppLogo className="size-7 ml-5 transition duration-250" />
                     <div className="w-32 h-full flex items-center -translate-y-[2px]">MyApp</div>
                 </Link>

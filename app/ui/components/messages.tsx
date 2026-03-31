@@ -89,7 +89,7 @@ export function ClientDMContainer({ messages, user1, user2 }: { messages: Array<
                                 <BackIcon width="30px" className="mr-2" />
                             </button>
                         </form>
-                        <Link href={`/users/${user2.id}`} className="flex flex-row items-center gap-3 h-full px-4 transition duration-100 hover:bg-dark-200 -translate-x-2">
+                        <Link href={`/app/users/${user2.id}`} className="flex flex-row items-center gap-3 h-full px-4 transition duration-100 hover:bg-dark-200 -translate-x-2">
                             <UserProfileImage id={user2.id} hasImage={user2.has_profile_image} styles="size-8" />
                             <span className="font-bold">{user2.name}</span>
                         </Link>

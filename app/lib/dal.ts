@@ -5,7 +5,7 @@ import { createSession, decrypt, encrypt } from '@/app/lib/session'
 import { redirect } from 'next/navigation'
 import { cache } from 'react'
 
-export const verifySession = cache(async () => {
+export const verifySession = cache(async (callbackURL?: string) => {
     const cookie = (await cookies()).get('session')?.value
     const session = await decrypt(cookie)
 

@@ -43,7 +43,7 @@ async function PostWithData({ id, userID }: { id: number, userID: number }) {
     return (
         <>
             <div className="bg-dark-300 flex flex-col m-2">
-                <Link href="/" className="text-light-100 size-auto opacity-50 z-1 transition duration-100 hover:transform hover:translate-x-[5px] hover:opacity-100 w-[max-content] flex flex-row gap-2 items-center ml-2 mt-2 pr-2 select-none">
+                <Link href="/app" className="text-light-100 size-auto opacity-50 z-1 transition duration-100 hover:transform hover:translate-x-[5px] hover:opacity-100 w-[max-content] flex flex-row gap-2 items-center ml-2 mt-2 pr-2 select-none">
                     <BackIcon width="30px" />
                     <span>Back</span>
                 </Link>
@@ -62,12 +62,12 @@ function TextPost({ post }: { post: postgres.Row }) {
             <div className="flex flex-row gap-4 items-center pt-2 pl-2 pb-1">
                 <PostUser post={post} />
                 {post.community_id && (
-                    <Link href={`/communities/${post.community_id}`} className="transition duration-50 hover:brightness-115"><PostCommunity post={post} /></Link>
+                    <Link href={`/app/communities/${post.community_id}`} className="transition duration-50 hover:brightness-115"><PostCommunity post={post} /></Link>
                 )}
                 <PostDate date={post.date.toString()} />
             </div>
             <h1 className="font-bold text-xl">{post.title}</h1>
-            <p className="">{post.content}</p>
+            <p>{post.content}</p>
         </div>
     );
 }
@@ -78,7 +78,7 @@ function ImagePost({ post }: { post: postgres.Row }) {
             <div className="flex flex-row gap-4 items-center pt-2 pl-2 pb-1">
                 <PostUser post={post} />
                 {post.community_id && (
-                    <Link href={`/communities/${post.community_id}`} className="transition duration-50 hover:brightness-115"><PostCommunity post={post} /></Link>
+                    <Link href={`/app/communities/${post.community_id}`} className="transition duration-50 hover:brightness-115"><PostCommunity post={post} /></Link>
                 )}
                 <PostDate date={post.date.toString()} />
             </div>
@@ -86,7 +86,7 @@ function ImagePost({ post }: { post: postgres.Row }) {
             <div className="w-full rounded-sm overflow-hidden select-none">
                 <img src={`/post-images/${post.id}.jpg`} alt={post.id} draggable={false} />
             </div>
-            <p className="">{post.content}</p>
+            <p>{post.content}</p>
         </div>
     );
 }
@@ -94,7 +94,7 @@ function ImagePost({ post }: { post: postgres.Row }) {
 function PostUser({ post }: { post: postgres.Row }) {
     return (
         <Link
-            href={`/users/${post.author}`}
+            href={`/app/users/${post.author}`}
             className="flex flex-row items-center gap-3"
         >
             <UserProfileImage id={post.author} hasImage={post.has_profile_image} styles="size-8" />

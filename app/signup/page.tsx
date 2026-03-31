@@ -1,10 +1,8 @@
 "use client";
 
-import { Metadata } from "next"
 import Link from "next/link"
 import { useActionState } from "react";
-import { registerUser } from "../lib/action";
-import { error } from "console";
+import { registerUser } from "@/app/lib/action";
 
 export default function Page() {
     const [errorMessage, formAction, isPending] = useActionState(registerUser, undefined);

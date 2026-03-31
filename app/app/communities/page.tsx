@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { fetchCommunities } from "../lib/data";
-import RightNav from "../ui/components/rightnav";
-import { formatCommunityName, getCommunityColor } from "../lib/utils";
+import { fetchCommunities } from "../../lib/data";
+import RightNav from "@/app/ui/components/rightnav";
+import { formatCommunityName, getCommunityColor } from "../../lib/utils";
 import postgres from "postgres";
 
 export default function Page() {
@@ -20,7 +20,7 @@ async function CommunityList() {
             <div className="absolute flex flex-col gap-2 w-full">
                 {communities.map(community => (
                     <Link
-                        key={community.id} href={`/communities/${community.id}`}
+                        key={community.id} href={`/app/communities/${community.id}`}
                         className="relative w-full h-32 z-1 bg-dark-100 rounded-md hover:[&_img]:brightness-75 hover:[&>div]:opacity-100"
                     >
                         <div className="relative w-full h-full rounded-md overflow-hidden after:absolute after:size-full after:bg-linear-to-r after:from-dark-300 after:to-transparent after:top-0 after:left-0">
