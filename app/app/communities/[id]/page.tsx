@@ -41,7 +41,7 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
                     <div className="flex flex-col gap-2 p-2">
                         <div className="relative w-full h-10 flex items-center justify-center select-none">
                             <Link
-                                href={`/create/post?community=${community.id}`}
+                                href={`/app/create/post?community=${community.id}`}
                                 className="absolute w-full h-[110%] grid grid-cols-[30px_auto] gap-2 items-center transition duration-100 px-2 pt-1 pb-1 cursor-pointer hover:bg-dark-50 hover:[&_svg]:text-primary-300 rounded-md">
                                 <CreatePostIcon width="25px" className="text-primary-600 transition duration-100 m-auto" />
                                 <span>Create post</span>
@@ -65,7 +65,7 @@ export default async function Page(props: { params: Promise<{ id: number }> }) {
                                 <span className="text-primary-300">{creator.name}</span>
                             </div>
                             <div className="flex flex-row gap-2">
-                                <span>Created </span>
+                                <span>Created: </span>
                                 <span className="text-primary-300">{existedSice}</span>
                             </div>
                         </div>
