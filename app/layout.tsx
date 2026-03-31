@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./ui/components/header";
 import LeftNav from "./ui/components/leftnav";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: {
@@ -15,7 +16,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     return (
         <html lang="en">
             <body className="text-light-100 bg-dark-200 grid">
+                <Suspense>
                 {children}
+                </Suspense>
             </body>
         </html>
     );
