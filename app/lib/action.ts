@@ -112,6 +112,7 @@ export async function sendDM(formData: FormData) {
         INSERT INTO messages (content, author, channel)
         VALUES (${content}, ${user1}, (SELECT id FROM dm_channels WHERE (user1 = ${user1} AND user2 = ${user2}) OR (user1 = ${user2} AND user2 = ${user1})));
     `;
+    revalidatePath("/app");
 }
 
 export async function deleteDM(formData: FormData) {
