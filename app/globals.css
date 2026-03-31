@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+:root {
+    --test-color: #222222;
+
+    --header-height: 50px;
+}
+
+@theme {
+    --color-dark-50: #3a3a3a;
+    --color-dark-100: #292929;
+    --color-dark-150: #222222;
+    --color-dark-200: #1e1e1e;
+    --color-dark-300: #131313;
+    --color-light-100: #ffffff;
+    --color-light-200: #ececec;
+    --color-light-300: #e0e0e0;
+    --color-primary-100: #ebc8ff;
+    --color-primary-200: #e1adff;
+    --color-primary-300: #d080ff;
+    --color-primary-600: #8002c9;
+    --color-primary-800: #540085;
+    --color-primary-900: #340052;
+    --color-accent-400: #47eaff;
+    --color-accent-600: #15c4db;
+
+    --color-transparent: rgba(0, 0, 0, 0);
+}
+
+@layer components {
+    .page-content {
+        display: grid;
+        grid-template-rows: 50px calc(100vh - 50px);
+    }
+
+    .debug {
+        border: red 1px solid;
+    }
+
+    .debuf {
+
+        &,
+        * {
+            border: red 1px solid;
+        }
+    }
+
+    .debuc {
+
+        &,
+        &>* {
+            border: red 1px solid;
+        }
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .header-link {
+        transition: ease-out 50ms;
+        position: relative;
+        height: var(--header-height);
+
+        &:hover {
+            transform: translateY(-2px);
+
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 2px;
+            }
+        }
+    }
+
+    .dm-message {
+        &::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            transform: rotateZ(45deg) translate(1px, -50%);
+            width: 10px;
+            height: 10px;
+        }
+    }
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    display: grid;
+    grid-template-rows: var(--header-height) calc(100vh - var(--header-height));
+}
