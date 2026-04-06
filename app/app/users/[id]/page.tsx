@@ -1,11 +1,8 @@
 import { verifySession } from "@/app/lib/dal";
-import { fetchDefinedUserById, fetchProfilePostsByUser, fetchUserPageInfo } from "@/app/lib/data";
+import { fetchProfilePostsByUser, fetchUserPageInfo } from "@/app/lib/data";
 import { Post } from "@/app/ui/components/homepagepost";
-import LeftNav from "@/app/ui/components/leftnav";
 import { UserProfileImage } from "@/app/ui/components/user";
 import { formatDistance } from "date-fns";
-import { useFormatter } from "next-intl";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export default async function Page(props: {

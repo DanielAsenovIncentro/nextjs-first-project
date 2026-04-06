@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 export function UserProfileImage({ id, hasImage, styles }: { id: number, hasImage: boolean, styles?: string }) {
     return (
         <>

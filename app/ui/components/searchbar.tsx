@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { SadFaceIcon, SearchIcon } from "./icons";
 import { homePageSearch } from "@/app/lib/action";
 import { useDebouncedCallback } from "use-debounce";

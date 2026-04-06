@@ -1,8 +1,7 @@
 import 'server-only'
 
 import { cookies } from 'next/headers'
-import { createSession, decrypt, encrypt } from '@/app/lib/session'
-import { redirect } from 'next/navigation'
+import { decrypt, encrypt } from '@/app/lib/session'
 import { cache } from 'react'
 
 export const verifySession = cache(async (callbackURL?: string) => {

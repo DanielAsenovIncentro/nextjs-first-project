@@ -1,6 +1,6 @@
 import { createDMChannel } from "@/app/lib/action";
 import { verifySession } from "@/app/lib/dal";
-import { fetchDefinedUserById, fetchUsersExcept, getMessagesBetween } from "@/app/lib/data";
+import { fetchDefinedUserById, fetchUsersExcept } from "@/app/lib/data";
 import { redirect } from "next/navigation";
 import { ClientDMContainer } from "./messages";
 import { DMUserList } from "./dmuserlist";

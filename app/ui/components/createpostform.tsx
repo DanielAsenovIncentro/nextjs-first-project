@@ -3,7 +3,7 @@
 import { formatCommunityName, getCommunityColor } from "@/app/lib/utils";
 import postgres from "postgres";
 import { Dropdown } from "./dropdown";
-import { ChangeEvent, ChangeEventHandler, useActionState, useEffect, useState } from "react";
+import { ChangeEvent, useActionState, useEffect, useState } from "react";
 import { AddImageIcon, ArrowDownIcon } from "./icons";
 import clsx from "clsx";
 import { createPost } from "@/app/lib/action";

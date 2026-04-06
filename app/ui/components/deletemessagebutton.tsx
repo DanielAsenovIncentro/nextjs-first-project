@@ -1,6 +1,6 @@
 import { deleteDM } from "@/app/lib/action";
 import { DeleteIcon } from "./icons";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export function DeleteMessageButton({ messageID }:{ messageID: number }) {
     const path = usePathname();
