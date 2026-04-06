@@ -177,7 +177,7 @@ function Messages({ messages, user1, user2, submitted, typing }: { messages: Arr
                 </div>
             )}
             {typing && (
-                <div className="relative w-10 h-6 flex flex-row justify-center items-center gap-[3px] bg-dark-50 after:bg-dark-50 rounded-sm ml-12 after:size-2 after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:rotate-z-45 after:-translate-x-1">
+                <div className="typing-animation relative w-10 h-6 flex flex-row justify-center items-center gap-[3px] bg-dark-50 after:bg-dark-50 rounded-sm ml-12 after:size-2 after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:rotate-z-45 after:-translate-x-1">
                     <div className="size-[6px] rounded-full bg-light-300"></div>
                     <div className="size-[6px] rounded-full bg-light-300"></div>
                     <div className="size-[6px] rounded-full bg-light-300"></div>
@@ -277,9 +277,6 @@ function EmojiList({ query, content, setContent, setEmojiMatch, focusInput }: { 
 }
 
 function formatTime(date: string) {
-    const filter1 = date.split(":");
-    const hour = Number(filter1[0].split(" ")[filter1[0].split(" ").length - 1]);
-    const minute = Number(filter1[1])
-    const formattedMinute = (minute <= 9) ? `0${minute}` : minute;
-    return `${hour}:${formattedMinute}`;
+    const fullTime = date.split("T")[1].split(".")[0];
+    return fullTime.split(":")[0] + ":" + fullTime.split(":")[1];
 }
