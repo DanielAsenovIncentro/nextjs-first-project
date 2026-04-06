@@ -20,6 +20,13 @@ const emotes: Record<string, string> = {
     ":shrug:": "¯\\_(ツ)_/¯"
 }
 
+const reactions: Record<number, string> = {
+    0: "❤️",
+    1: "🤣",
+    2: "😄",
+    3: "😭"
+}
+
 function parseEmotes(text: string) {
     Object.keys(emotes).forEach(emoteKey => {
         if (text.includes(emoteKey)) {
@@ -100,7 +107,7 @@ export function ClientDMContainer({ user1, user2 }: { user1: postgres.Row, user2
             const baseURL = window.location.href.split("/app")[0];
             const typingUrl = `${baseURL}/api/get/typing?user1=${user1.id}&user2=${user2.id}`;
             fetch(typingUrl).then(response => response.json()).then(res => {
-                if(res.users.includes(user1.id)) setTyping(true);
+                if (res.users.includes(user1.id)) setTyping(true);
                 else setTyping(false);
             })
             const messagesURL = `${baseURL}/api/get/messages?user1=${user1.id}&user2=${user2.id}`;
@@ -212,13 +219,26 @@ function Message({ message, user1, user2 }: { message: postgres.Row | string, us
                 "flex-row-reverse": message.author == user1.id
             })}>
                 <div className={clsx(
-                    "dm-message w-max px-4 py-2 pb-3 rounded-md relative max-w-64 hover:[&>form]:block", {
+                    "dm-message relative w-max px-4 py-2 pb-3 rounded-md relative max-w-64 hover:[&>form]:block", {
                     "bg-primary-600 after:bg-primary-600 after:right-0": message.author == user1.id,
                     "bg-dark-50 after:bg-dark-50 after:left-0 after:translate-x-[-100%] ml-8": message.author == user2.id
                 })}>
                     <span>{message.content}</span>
                     {message.author == user1.id && (
                         <DeleteMessageButton messageID={message.id} />
+                    )}
+                    {message.reaction && (
+                        <div className="select-none">
+                            {message.author == user1.id ? (
+                                <div className="absolute left-0 bottom-2 -translate-x-1/2 bg-dark-100 rounded-full border-2 border-primary-600 bg-primary-900 size-7 flex justify-center items-center">
+                                    <div className="-translate-y-[1px]">{reactions[message.reaction]}</div>
+                                </div>
+                            ) : (
+                                <div className="absolute right-0 bottom-2 translate-x-1/2 bg-dark-100 rounded-full border-2 border-dark-50 bg-dark-300 size-7 flex justify-center items-center">
+                                    <div className="-translate-y-[2px]">{reactions[message.reaction]}</div>
+                                </div>
+                            )}
+                        </div>
                     )}
                 </div>
                 <span className={clsx(
