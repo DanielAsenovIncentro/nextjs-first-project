@@ -18,6 +18,8 @@ export default async function LeftNav() {
     const otherID = Number(session?.currentChatUser);
     if (userID == otherID) redirect(`/app/users/${userID}`);
 
+    
+
     if (!otherID || otherID <= 0) {
         const users = await fetchUsersExcept(session.userId);
         return (
@@ -43,11 +45,12 @@ export default async function LeftNav() {
 async function DMChannel({ user1ID, user2ID }: { user1ID: number, user2ID: number }) {
     const user1 = (await fetchDefinedUserById(user1ID))[0];
     const user2 = (await fetchDefinedUserById(user2ID))[0];
-    const messages = await getMessagesBetween(user1.id, user2.id);
+    // const messages = await getMessagesBetween(user1.id, user2.id);
 
     return (
         <>
-            <ClientDMContainer messages={messages} user1={user1} user2={user2} />
+            {/* <ClientDMContainer messages={messages} user1={user1} user2={user2} /> */}
+            <ClientDMContainer user1={user1} user2={user2} />
         </>
     );
 }

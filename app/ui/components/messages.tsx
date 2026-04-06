@@ -11,9 +11,10 @@ import { onDMGoBack, sendDM } from "@/app/lib/action";
 import { DMListSkeleton } from "../skeletons";
 import { Dispatch } from "react";
 import { useRef } from "react";
-import { Ref } from "react";
+
 const emojis = require("emoji.json");
 const MAX_EMOJI_LIST_DISPLAY = 7;
+const MESSAGE_REFRESH_INTERVAL = 1000; // ms
 
 const emotes: Record<string, string> = {
     ":shrug:": "¯\\_(ツ)_/¯"
@@ -28,11 +29,23 @@ function parseEmotes(text: string) {
     return text;
 }
 
-export function ClientDMContainer({ messages, user1, user2 }: { messages: Array<postgres.Row>, user1: postgres.Row, user2: postgres.Row }) {
+function updateTyping(user1ID: number, user2ID: number, typing: boolean) {
+    const baseURL = window.location.href.split("/app")[0];
+    const url = `${baseURL}/api/get/typing`;
+    const requestOptions = {
+        method: "POST",
+        body: JSON.stringify({ "user1": user1ID, "user2": user2ID, "typing": typing })
+    }
+    fetch(url, requestOptions);
+}
+
+export function ClientDMContainer({ user1, user2 }: { user1: postgres.Row, user2: postgres.Row }) {
     const [content, setContent] = useState("");
     const [submitted, setSubmitted] = useState("");
     const [goBack, setGoBack] = useState(false);
     const [emojiMatch, setEmojiMatch] = useState("");
+    const [typing, setTyping] = useState(false); // Check whether the other user is typing
+    const [messages, setMessages] = useState([]);
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -59,12 +72,15 @@ export function ClientDMContainer({ messages, user1, user2 }: { messages: Array<
         checkForEmojies(value);
         const parsedEmotesText = parseEmotes(value);
         setContent(parsedEmotesText);
+
         // checkMarkdown(parsedEmotesText);
+        updateTyping(user1.id, user2.id, parsedEmotesText.length > 0);
     }
 
     function handleSubmit() {
         setSubmitted(content);
         setContent("");
+        updateTyping(user1.id, user2.id, false);
     }
 
     function handleSubmitGoBack() {
@@ -79,10 +95,28 @@ export function ClientDMContainer({ messages, user1, user2 }: { messages: Array<
         setSubmitted("");
     }, [messages]);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const baseURL = window.location.href.split("/app")[0];
+            const typingUrl = `${baseURL}/api/get/typing?user1=${user1.id}&user2=${user2.id}`;
+            fetch(typingUrl).then(response => response.json()).then(res => {
+                if(res.users.includes(user1.id)) setTyping(true);
+                else setTyping(false);
+            })
+            const messagesURL = `${baseURL}/api/get/messages?user1=${user1.id}&user2=${user2.id}`;
+            fetch(messagesURL).then(response => response.json()).then(res => {
+                setMessages(res);
+            })
+        }, MESSAGE_REFRESH_INTERVAL);
+        return () => {
+            clearInterval(interval);
+        }
+    });
+
     return (
         <>
             {!goBack ? (
-                <div className="grid grid-rows-[50px_auto_60px] h-full max-h-[calc(100vh-50px)] bg-dark-100 p-2 rounded-t-md">
+                <div className="grid grid-rows-[50px_auto_60px] h-full max-h-[calc(100vh-50px)] bg-dark-100 p-2 rounded-t-md relative">
                     <div className="bg-dark-300 flex flex-row items-center justify-left gap-2 pl-2 rounded-md">
                         <form action={onDMGoBack} onSubmit={handleSubmitGoBack} className="opacity-60 transition duration-100 hover:transform hover:translate-x-1 hover:opacity-100 cursor-pointer flex">
                             <button type="submit" className="cursor-pointer">
@@ -95,7 +129,7 @@ export function ClientDMContainer({ messages, user1, user2 }: { messages: Array<
                         </Link>
                     </div>
                     <div className="relative overflow-y-scroll flex flex-col-reverse no-scrollbar">
-                        <Messages messages={messages} user1={user1} user2={user2} submitted={submitted} />
+                        <Messages messages={messages} user1={user1} user2={user2} submitted={submitted} typing={typing} />
                     </div>
                     <form action={sendDM} onSubmit={handleSubmit} className="grid grid-cols-[auto_50px] gap-2 mx-2">
                         <div className="flex m-auto mt-0 w-full h-12 relative">
@@ -125,7 +159,7 @@ export function ClientDMContainer({ messages, user1, user2 }: { messages: Array<
     );
 }
 
-function Messages({ messages, user1, user2, submitted }: { messages: Array<postgres.Row>, user1: postgres.Row, user2: postgres.Row, submitted: string }) {
+function Messages({ messages, user1, user2, submitted, typing }: { messages: Array<postgres.Row>, user1: postgres.Row, user2: postgres.Row, submitted: string, typing: boolean }) {
     return (
         <div className="flex flex-col py-4 w-full h-max gap-1 absolute">
             {messages.map(message => (
@@ -142,11 +176,19 @@ function Messages({ messages, user1, user2, submitted }: { messages: Array<postg
                     <Message message={submitted} user1={user1} user2={user2} />
                 </div>
             )}
+            {typing && (
+                <div className="relative w-10 h-6 flex flex-row justify-center items-center gap-[3px] bg-dark-50 after:bg-dark-50 rounded-sm ml-12 after:size-2 after:absolute after:left-0 after:top-1/2 after:-translate-y-1/2 after:rotate-z-45 after:-translate-x-1">
+                    <div className="size-[6px] rounded-full bg-light-300"></div>
+                    <div className="size-[6px] rounded-full bg-light-300"></div>
+                    <div className="size-[6px] rounded-full bg-light-300"></div>
+                </div>
+            )}
         </div>
     )
 }
 
 function Message({ message, user1, user2 }: { message: postgres.Row | string, user1: postgres.Row, user2: postgres.Row }) {
+
     if (typeof (message) == "string") {
         return (
             <>
@@ -209,7 +251,7 @@ function EmojiList({ query, content, setContent, setEmojiMatch, focusInput }: { 
 
     function getHighlightedName(query: string, emojiName: string) {
         const shortName = emojiName.split(":")[0];
-        if(!shortName.includes(query)) return shortName;
+        if (!shortName.includes(query)) return shortName;
         const index = shortName.indexOf(query);
         const start = shortName.substring(0, index);
         const end = shortName.substring(index + query.length);

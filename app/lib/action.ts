@@ -107,6 +107,7 @@ export async function sendDM(formData: FormData) {
     const user1 = formData.get("user1") as string;
     const user2 = formData.get("user2") as string;
     if (user1 == user2) return;
+    if(content.trim().length <= 0) return;
 
     await sql`
         INSERT INTO messages (content, author, channel)
@@ -229,4 +230,11 @@ export async function createCommunity(prevState: any, formData: FormData) {
     if(hasImage) saveFile(image, "community-banner-images/", `${results[0].id}.jpg`);
 
     redirect("/app/communities");
+}
+
+export async function getTyping(user1ID: number, user2ID: number) {
+    const response = await sql`select id from users where typing_channel = (
+        select id from dm_channels where (user1 = ${user1ID} and user2 = ${user2ID}) or (user1 = ${user2ID} and user2 = ${user1ID})
+    )`;
+    return response;
 }
